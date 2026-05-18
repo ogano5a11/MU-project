@@ -61,11 +61,54 @@ $(document).ready(function() {
         $(this).text($(this).text() == 'Buka Timeline Sejarah' ? 'Tutup Timeline Sejarah' : 'Buka Timeline Sejarah');
     });
 
-    // 3. Accordion
-    $(".accordion-header").click(function() {
-        $(".accordion-content").not($(this).next()).slideUp("fast");
-        $(this).next(".accordion-content").slideToggle("fast");
-    });
+    function muatDataJadwal() {
+        let container = $("#jadwal-container");
+        container.empty();
+        container.append("<p>Memuat jadwal dari server...</p>");
+
+        $.ajax({
+            type: "GET",
+            url: "api/get_jadwal.php",
+            dataType: "json",
+            success: function(dataJadwal) {
+                container.empty();
+
+                if(dataJadwal.length === 0) {
+                    container.append("<p>Belum ada data jadwal pertandingan.</p>");
+                    return;
+                }
+
+                dataJadwal.forEach(function(jadwal) {
+                    let skorText = jadwal.status === "Selesai" ? jadwal.skor : "-";
+                    let statusText = jadwal.status === "Selesai" ? "Full Time (Selesai)" : "Akan Datang";
+                    
+                    let accordionHTML = `
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <span class="match-name">MANCHESTER UNITED VS ${jadwal.lawan.toUpperCase()}</span>
+                            <span class="match-date">${jadwal.tanggal.toUpperCase()}</span>
+                        </div>
+                        <div class="accordion-content">
+                            <p class="score-display">${skorText}</p>
+                            <p><strong>Status:</strong> ${statusText}</p>
+                        </div>
+                    </div>
+                    `;
+                    container.append(accordionHTML);
+                });
+
+                // Pasang ulang interaksi klik (Accordion) untuk elemen baru
+                $(".accordion-header").off("click").on("click", function() {
+                    $(".accordion-content").not($(this).next()).slideUp("fast");
+                    $(this).next(".accordion-content").slideToggle("fast");
+                });
+            },
+            error: function() {
+                container.html("<p style='color:red;'>Gagal mengambil data jadwal dari server.</p>");
+            }
+        });
+    }
+    muatDataJadwal();
 
     // 4. Slider Berita Animasi
     let currentSlide = 0;

@@ -85,28 +85,51 @@
                 </div>
 
                 <div class="panel" id="panel-jadwal">
-                    <h3>Update Hasil Pertandingan</h3>
+                    <h3>Tambah/Edit Jadwal & Hasil Pertandingan</h3>
                     <form id="form-jadwal">
+                        <input type="hidden" id="input-id-jadwal">
+                        
                         <div class="form-group">
-                            <label>Pilih Pertandingan</label>
-                            <select>
-                                <option>vs Arsenal (12 Mei 2026)</option>
-                                <option>vs Man City (19 Mei 2026)</option>
-                            </select>
+                            <label>Lawan (Contoh: Arsenal (Home))</label>
+                            <input type="text" id="input-lawan" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Tanggal Pertandingan</label>
+                            <input type="text" id="input-tanggal" required placeholder="Contoh: 12 Mei 2026">
                         </div>
                         <div class="form-group">
                             <label>Status</label>
-                            <select id="status-laga">
+                            <select id="input-status-laga">
                                 <option value="Akan Datang">Akan Datang</option>
                                 <option value="Selesai">Selesai</option>
                             </select>
                         </div>
-                        <div class="form-group" id="input-skor" style="display: none;">
+                        <div class="form-group" id="input-grup-skor" style="display: none;">
                             <label>Skor Akhir (Contoh: MUN 2 - 1 ARS)</label>
-                            <input type="text" placeholder="Masukkan skor">
+                            <input type="text" id="input-skor-laga" placeholder="Masukkan skor">
                         </div>
-                        <button type="submit" class="btn-submit">Update Jadwal</button>
+                        
+                        <button type="submit" class="btn-submit" id="btn-simpan-jadwal">Simpan Jadwal</button>
+                        <button type="button" class="btn-submit" id="btn-batal-edit-jadwal" style="display: none; background: #555;">Batal Edit</button>
                     </form>
+
+                    <hr style="margin: 30px 0; border: 1px solid #ddd;">
+                    
+                    <h3>Daftar Jadwal Tersimpan</h3>
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                        <thead>
+                            <tr style="background-color: var(--mu-red); color: white;">
+                                <th style="padding: 10px; border: 1px solid #ccc;">No</th>
+                                <th style="padding: 10px; border: 1px solid #ccc;">Lawan</th>
+                                <th style="padding: 10px; border: 1px solid #ccc;">Tanggal</th>
+                                <th style="padding: 10px; border: 1px solid #ccc;">Status</th>
+                                <th style="padding: 10px; border: 1px solid #ccc;">Skor</th>
+                                <th style="padding: 10px; border: 1px solid #ccc;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabel-jadwal-body">
+                            </tbody>
+                    </table>
                 </div>
 
                 <div class="panel" id="panel-berita">

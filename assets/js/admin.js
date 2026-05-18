@@ -25,14 +25,115 @@ $(document).ready(function() {
         $(targetPanel).fadeIn(400);
     });
 
-    // 4. Interaksi Form Jadwal
-    $("#status-laga").change(function() {
+    // Dinamika Form: Tampilkan form skor hanya jika status selesai
+    $("#input-status-laga").change(function() {
         if ($(this).val() === "Selesai") {
-            $("#input-skor").slideDown();
+            $("#input-grup-skor").slideDown();
         } else {
-            $("#input-skor").slideUp();
+            $("#input-grup-skor").slideUp();
+            $("#input-skor-laga").val(""); // Kosongkan skor
         }
     });
+
+    // A. Read (Tabel Jadwal)
+    function muatTabelJadwal() {
+        $.ajax({
+            type: "GET",
+            url: "api/get_jadwal.php",
+            dataType: "json",
+            success: function(data) {
+                let tbody = $("#tabel-jadwal-body");
+                tbody.empty();
+                if (data.length === 0) {
+                    tbody.append('<tr><td colspan="6" style="text-align:center; padding:15px;">Belum ada jadwal.</td></tr>');
+                    return;
+                }
+                data.forEach(function(jadwal, index) {
+                    let skorText = jadwal.status === "Selesai" ? jadwal.skor : "-";
+                    let baris = `
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">${index + 1}</td>
+                            <td style="padding: 10px; border: 1px solid #ccc;">${jadwal.lawan}</td>
+                            <td style="padding: 10px; border: 1px solid #ccc;">${jadwal.tanggal}</td>
+                            <td style="padding: 10px; border: 1px solid #ccc;">${jadwal.status}</td>
+                            <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">${skorText}</td>
+                            <td style="padding: 10px; border: 1px solid #ccc; text-align: center;">
+                                <button class="btn-edit-jadwal" style="background: #D6A449; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 3px; margin-right: 5px;" 
+                                    data-id="${jadwal.id}" data-lawan="${jadwal.lawan}" data-tanggal="${jadwal.tanggal}" data-status="${jadwal.status}" data-skor="${jadwal.skor}">Edit</button>
+                                <button class="btn-hapus-jadwal" style="background: #111; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 3px;" 
+                                    data-id="${jadwal.id}">Hapus</button>
+                            </td>
+                        </tr>`;
+                    tbody.append(baris);
+                });
+            }
+        });
+    }
+    muatTabelJadwal();
+
+    // B. Create & Update
+    $("#form-jadwal").submit(function(e) {
+        e.preventDefault();
+        let id = $("#input-id-jadwal").val();
+        let lawan = $("#input-lawan").val();
+        let tanggal = $("#input-tanggal").val();
+        let status = $("#input-status-laga").val();
+        let skor = $("#input-skor-laga").val();
+
+        let apiUrl = id === "" ? "api/simpan_jadwal.php" : "api/update_jadwal.php";
+
+        $.ajax({
+            type: "POST", url: apiUrl, dataType: "json",
+            data: { id: id, lawan: lawan, tanggal: tanggal, status: status, skor: skor },
+            success: function(response) {
+                if(response.status === "sukses") {
+                    alert(response.pesan);
+                    resetFormJadwal();
+                    muatTabelJadwal();
+                } else { alert("Gagal: " + response.pesan); }
+            }
+        });
+    });
+
+    // C. Persiapan Edit
+    $(document).on("click", ".btn-edit-jadwal", function() {
+        $("#input-id-jadwal").val($(this).data("id"));
+        $("#input-lawan").val($(this).data("lawan"));
+        $("#input-tanggal").val($(this).data("tanggal"));
+        
+        let status = $(this).data("status");
+        $("#input-status-laga").val(status).trigger('change'); 
+        $("#input-skor-laga").val($(this).data("skor"));
+
+        $("#btn-simpan-jadwal").text("Update Jadwal");
+        $("#btn-batal-edit-jadwal").show();
+        $("html, body").animate({ scrollTop: $("#form-jadwal").offset().top - 20 }, "fast");
+    });
+
+    // D. Delete
+    $(document).on("click", ".btn-hapus-jadwal", function() {
+        if(confirm("Hapus jadwal ini?")) {
+            $.ajax({
+                type: "POST", url: "api/hapus_jadwal.php", dataType: "json",
+                data: { id: $(this).data("id") },
+                success: function(response) {
+                    if(response.status === "sukses") {
+                        alert(response.pesan); muatTabelJadwal();
+                    } else { alert("Gagal: " + response.pesan); }
+                }
+            });
+        }
+    });
+
+    // E. Reset Form
+    $("#btn-batal-edit-jadwal").click(resetFormJadwal);
+    function resetFormJadwal() {
+        $("#form-jadwal").trigger("reset");
+        $("#input-id-jadwal").val("");
+        $("#input-status-laga").trigger('change');
+        $("#btn-simpan-jadwal").text("Simpan Jadwal");
+        $("#btn-batal-edit-jadwal").hide();
+    }
 
     // 5. Simpan Data Pemain ke Database MySQL via AJAX
     function muatTabelPemain() {
