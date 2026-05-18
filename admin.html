@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Hub - MU System</title>
+    <link rel="stylesheet" href="assets/css/admin.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+    <div id="login-screen">
+        <div class="login-box">
+            <h2>Admin Login</h2>
+            <p>Sistem Web Manchester United</p>
+            <input type="text" id="username" placeholder="Username" value="admin">
+            <input type="password" id="password" placeholder="Password" value="ggmu123">
+            <button class="btn-submit" id="btn-login" style="width: 100%;">Masuk</button>
+        </div>
+    </div>
+
+    <div id="dashboard-screen">
+        <header class="admin-header">
+            <h2>Admin Hub MU</h2>
+            <button class="btn-submit" id="btn-logout" style="background: #333;">Logout</button>
+        </header>
+
+        <div class="dashboard-container">
+            <nav class="sidebar">
+                <a class="nav-link active" data-target="#panel-pemain">Kelola Data Pemain</a>
+                <a class="nav-link" data-target="#panel-jadwal">Update Jadwal & Hasil</a>
+                <a class="nav-link" data-target="#panel-berita">Kelola Berita</a>
+                <a class="nav-link" data-target="#panel-voting">Kelola Data Voting</a>
+            </nav>
+
+            <main class="main-content">
+                
+                <div class="panel active" id="panel-pemain">
+                    <h3>Tambah/Edit Pemain Skuad</h3>
+                    <form id="form-pemain">
+                        <div class="form-group">
+                            <label>Nama Pemain</label>
+                            <input type="text" id="input-nama" required placeholder="Contoh: Alejandro Garnacho">
+                        </div>
+                        <div class="form-group">
+                            <label>Posisi</label>
+                            <select id="input-posisi">
+                                <option value="Goalkeeper">Goalkeeper</option>
+                                <option value="Defender">Defender</option>
+                                <option value="Midfielder">Midfielder</option>
+                                <option value="Forward">Forward</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Nomor Punggung</label>
+                            <input type="number" id="input-nomor" required>
+                        </div>
+                        <div class="form-group">
+                            <label>URL Foto Pemain (Link Gambar)</label>
+                            <input type="url" id="input-foto" required placeholder="https://link-gambar.com/foto.jpg">
+                        </div>
+                        
+                        <button type="submit" class="btn-submit">Simpan Data Pemain</button>
+                    </form>
+                </div>
+
+                <div class="panel" id="panel-jadwal">
+                    <h3>Update Hasil Pertandingan</h3>
+                    <form id="form-jadwal">
+                        <div class="form-group">
+                            <label>Pilih Pertandingan</label>
+                            <select>
+                                <option>vs Arsenal (12 Mei 2026)</option>
+                                <option>vs Man City (19 Mei 2026)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="status-laga">
+                                <option value="Akan Datang">Akan Datang</option>
+                                <option value="Selesai">Selesai</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="input-skor" style="display: none;">
+                            <label>Skor Akhir (Contoh: MUN 2 - 1 ARS)</label>
+                            <input type="text" placeholder="Masukkan skor">
+                        </div>
+                        <button type="submit" class="btn-submit">Update Jadwal</button>
+                    </form>
+                </div>
+
+                <div class="panel" id="panel-berita">
+                    <h3>Tulis Berita Baru</h3>
+                    <textarea rows="5" style="width: 100%; padding: 10px;" placeholder="Tulis konten berita di sini..."></textarea>
+                    <br><br>
+                    <button class="btn-submit">Publish Berita</button>
+                </div>
+
+                <div class="panel" id="panel-voting">
+                    <h3>Data Voting Player of the Month</h3>
+                    <p>Bruno Fernandes: <strong>75%</strong></p>
+                    <p>Kobbie Mainoo: <strong>60%</strong></p>
+                    <button class="btn-submit" style="background: #333;">Reset Polling Bulan Ini</button>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <script src="assets/js/admin.js"></script>
+</body>
+</html>

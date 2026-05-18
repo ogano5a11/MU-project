@@ -1,0 +1,131 @@
+/* File: assets/css/admin.css */
+
+:root {
+    --mu-red: #DA291C;
+    --mu-black: #1a1a1a;
+    --bg-admin: #f0f2f5;
+}
+
+body { 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    margin: 0; 
+    background-color: var(--bg-admin); 
+    color: #333; 
+}
+
+/* --- HALAMAN LOGIN --- */
+#login-screen {
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100vh;
+    background: var(--mu-black); 
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    z-index: 1000; 
+    color: white;
+}
+
+.login-box { 
+    background: white; 
+    padding: 40px; 
+    border-radius: 8px; 
+    color: black; 
+    width: 300px; 
+    text-align: center; 
+}
+
+.login-box input { 
+    width: 90%; 
+    padding: 10px; 
+    margin: 10px 0; 
+    border: 1px solid #ccc; 
+}
+
+/* --- DASHBOARD LAYOUT --- */
+#dashboard-screen { 
+    display: none; 
+}
+
+.admin-header { 
+    background: var(--mu-red); 
+    color: white; 
+    padding: 15px 20px; 
+    display: flex; 
+    justify-content: space-between; 
+}
+
+.dashboard-container { 
+    display: flex; 
+    min-height: 90vh; 
+}
+
+/* Sidebar Menu */
+.sidebar { 
+    width: 250px; 
+    background: var(--mu-black); 
+    color: white; 
+    padding-top: 20px; 
+}
+
+.sidebar a {
+    display: block; 
+    color: white; 
+    text-decoration: none; 
+    padding: 15px 20px;
+    border-bottom: 1px solid #333; 
+    transition: background 0.3s; 
+    cursor: pointer;
+}
+
+.sidebar a:hover, .sidebar a.active { 
+    background: var(--mu-red); 
+}
+
+/* Konten Utama */
+.main-content { 
+    flex: 1; 
+    padding: 30px; 
+}
+
+.panel { 
+    display: none; 
+    background: white; 
+    padding: 20px; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+}
+
+.panel.active { 
+    display: block; 
+}
+
+/* Form Styling */
+.form-group { 
+    margin-bottom: 15px; 
+}
+
+.form-group label { 
+    display: block; 
+    font-weight: bold; 
+    margin-bottom: 5px; 
+}
+
+.form-group input, .form-group select, .form-group textarea {
+    width: 100%; 
+    padding: 10px; 
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+    box-sizing: border-box;
+}
+
+.btn-submit { 
+    background: var(--mu-red); 
+    color: white; 
+    border: none; 
+    padding: 10px 20px; 
+    cursor: pointer; 
+    border-radius: 4px; 
+}
