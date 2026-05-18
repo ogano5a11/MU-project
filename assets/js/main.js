@@ -33,8 +33,8 @@ $(document).ready(function() {
                             </div>
                             <div class="flip-card-back">
                                 <h3>Statistik</h3>
-                                <p>ID Database: ${pemain.id}</p>
-                                <p>Status: Aktif</p>
+                                <p>Gol: 0</p>
+                                <p>Assist: 0</p>
                             </div>
                         </div>
                     </div>
