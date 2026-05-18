@@ -38,6 +38,8 @@
                 <div class="panel active" id="panel-pemain">
                     <h3>Tambah/Edit Pemain Skuad</h3>
                     <form id="form-pemain">
+                        <input type="hidden" id="input-id">
+                        
                         <div class="form-group">
                             <label>Nama Pemain</label>
                             <input type="text" id="input-nama" required placeholder="Contoh: Alejandro Garnacho">
@@ -60,8 +62,26 @@
                             <input type="url" id="input-foto" required placeholder="https://link-gambar.com/foto.jpg">
                         </div>
                         
-                        <button type="submit" class="btn-submit">Simpan Data Pemain</button>
+                        <button type="submit" class="btn-submit" id="btn-simpan-form">Simpan Data Pemain</button>
+                        <button type="button" class="btn-submit" id="btn-batal-edit" style="display: none; background: #555;">Batal Edit</button>
                     </form>
+
+                    <hr style="margin: 30px 0; border: 1px solid #ddd;">
+                    
+                    <h3>Daftar Pemain Tersimpan</h3>
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                        <thead>
+                            <tr style="background-color: var(--mu-red); color: white;">
+                                <th style="padding: 10px; border: 1px solid #ccc;">No</th>
+                                <th style="padding: 10px; border: 1px solid #ccc;">Nama</th>
+                                <th style="padding: 10px; border: 1px solid #ccc;">Posisi</th>
+                                <th style="padding: 10px; border: 1px solid #ccc;">Nomor</th>
+                                <th style="padding: 10px; border: 1px solid #ccc;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabel-pemain-body">
+                            </tbody>
+                    </table>
                 </div>
 
                 <div class="panel" id="panel-jadwal">

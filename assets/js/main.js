@@ -1,43 +1,55 @@
 $(document).ready(function() {
     
-    // 1. Muat Data Pemain (Baca dari LocalStorage yang diisi Admin)
+    // 1. Muat Data Pemain dari Database MySQL via AJAX
     function muatDataPemain() {
-        let dataPemain = JSON.parse(localStorage.getItem("dataSkuadMU")) || [];
         let container = $("#skuad-container");
-        
         container.empty();
+        container.append("<p>Memuat data pemain dari server...</p>");
 
-        if(dataPemain.length === 0) {
-            container.append("<p>Belum ada data pemain. Silakan tambahkan melalui Admin Hub.</p>");
-            return;
-        }
+        $.ajax({
+            type: "GET",
+            url: "api/get_pemain.php",
+            dataType: "json",
+            success: function(dataPemain) {
+                container.empty(); // Bersihkan teks loading
 
-        dataPemain.forEach(function(pemain) {
-            let cardHTML = `
-            <div class="flip-card">
-                <div class="flip-card-inner">
-                    <div class="flip-card-front" style="background-image: url('${pemain.foto}');">
-                        <div class="card-overlay"></div>
-                        <h2 class="player-number">${pemain.nomor}</h2>
-                        <div class="player-info">
-                            <h3>${pemain.nama}</h3>
-                            <p>${pemain.posisi}</p>
+                if(dataPemain.length === 0) {
+                    container.append("<p>Belum ada data pemain. Silakan tambahkan melalui Admin Hub.</p>");
+                    return;
+                }
+
+                // Looping data yang didapat dari database
+                dataPemain.forEach(function(pemain) {
+                    let cardHTML = `
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front" style="background-image: url('${pemain.foto}');">
+                                <div class="card-overlay"></div>
+                                <h2 class="player-number">${pemain.nomor}</h2>
+                                <div class="player-info">
+                                    <h3>${pemain.nama}</h3>
+                                    <p>${pemain.posisi}</p>
+                                </div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h3>Statistik</h3>
+                                <p>ID Database: ${pemain.id}</p>
+                                <p>Status: Aktif</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="flip-card-back">
-                        <h3>Statistik</h3>
-                        <p>Gol: 0</p>
-                        <p>Assist: 0</p>
-                    </div>
-                </div>
-            </div>
-            `;
-            container.append(cardHTML);
-        });
+                    `;
+                    container.append(cardHTML);
+                });
 
-        // Pasang event klik untuk efek flip pada kartu yang baru dibuat
-        $(".flip-card").click(function() {
-            $(this).toggleClass("is-flipped");
+                // Pasang kembali efek flip pada elemen yang baru di-render
+                $(".flip-card").click(function() {
+                    $(this).toggleClass("is-flipped");
+                });
+            },
+            error: function() {
+                container.html("<p style='color:red;'>Gagal mengambil data dari server. Pastikan database MySQL dan XAMPP berjalan.</p>");
+            }
         });
     }
 
